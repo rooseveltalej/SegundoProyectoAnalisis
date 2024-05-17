@@ -1,5 +1,4 @@
 //Fecha de creación: 10/05/2024
-//Fecha de creación: 10/05/2024
 public class Dinamico {
     public static Mochila resolverMochilaDP(Mochila mochila) {
         int capacidad = mochila.getCapacidad();
@@ -35,9 +34,10 @@ public class Dinamico {
             }
         }
 
-        Item[] itemsSeleccionados = java.util.Arrays.stream(items)
-                                                    .filter(item -> seleccionados[java.util.Arrays.asList(items).indexOf(item)])
-                                                    .toArray(Item[]::new);
+        Item[] itemsSeleccionados = java.util.stream.IntStream.range(0, n)
+                                                             .filter(i -> seleccionados[i])
+                                                             .mapToObj(i -> items[i])
+                                                             .toArray(Item[]::new);
 
         Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados);
         resultado.setPesoTotal(pesoTotal);
