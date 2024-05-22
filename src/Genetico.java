@@ -3,8 +3,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Genetico {
-    private static final int TAMANO_POBLACION = 10;
-    private static final double TASA_MUTACION = 0.05;
+    private static final int TAMANO_POBLACION = 10; //la cantidad de objetos que se van a evaluar
+    private static final double TASA_MUTACION = 0.05; 
     private static final int NUMERO_GENERACIONES = 20;
 
     public static Mochila resolverMochilaGA(Mochila mochila) {

@@ -24,6 +24,6 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA.getItems()).map(Item::getNombre).toList());
     }
-}
+} //Hola mundo
 
 
