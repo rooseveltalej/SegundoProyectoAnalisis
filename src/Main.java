@@ -3,12 +3,13 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+        // Ejercicio de los 5 objetos iniciales 
         Item[] items = {
-            new Item("Item1", 2, 3),
-            new Item("Item2", 3, 4),
-            new Item("Item3", 4, 5),
-            new Item("Item4", 5, 7),
-            new Item("Item5",6,15)
+            new Item("Bloqueador", 3, 9),
+            new Item("Ropa", 5, 10),
+            new Item("Sombrilla", 2, 7),
+            new Item("Desodorante", 3, 9),
+            new Item("Cepillo de dientes",2,10)
         };
 
         Mochila mochila = new Mochila(6, items);
@@ -28,9 +29,13 @@ public class Main {
         
 
         Item[] items2 = {};
+        int peso;
+        int valor;
         for (int i = 0; i < 10; i++) {
+            peso = (int)(Math.random() * 50 + 1);
+            valor = (int)(Math.random() * 50 + 1);
             items2 = Arrays.copyOf(items2, items2.length + 1);
-            items2[items2.length - 1] = new Item("Item" + (i + 1), i + 1, i + 1);
+            items2[items2.length - 1] = new Item("Item" + (i + 1), peso, valor);
         }
 
         Mochila mochila2 = new Mochila(10, items2);
@@ -46,7 +51,7 @@ public class Main {
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA2);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA2.getItems()).map(Item::getNombre).toList());
-            
+            //Prueba 10 items. Pero necesito saber si lo hago con los valores generados de esa forma o de otra manera
     }
 } //Hola mundo
 
