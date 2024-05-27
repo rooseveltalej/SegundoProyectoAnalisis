@@ -40,6 +40,12 @@ public class Main {
 
         Mochila mochila2 = new Mochila(10, items2);
 
+        //Imprimir todos los valores que se encuentren en items2
+        System.out.println("Items generados aleatoriamente de la mochila2: ");
+        for (Item item : items2) {
+            System.out.println(item);
+        }
+        
         //Resolver usando programación dinámica
         Mochila resultadoDP2 = Dinamico.resolverMochilaDP(mochila2);
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP2);

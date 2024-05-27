@@ -3,8 +3,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Genetico {
-    private static final int TAMANO_POBLACION = 10; //la cantidad de objetos que se van a evaluar
-    private static final double TASA_MUTACION = 0.05; 
+    private static final int TAMANO_POBLACION = 10; // La cantidad de objetos que se van a evaluar
+    private static final double TASA_MUTACION = 0.05;
     private static final int NUMERO_GENERACIONES = 20;
 
     public static Mochila resolverMochilaGA(Mochila mochila) {
@@ -12,10 +12,23 @@ public class Genetico {
         Item[] items = mochila.getItems();
         int n = items.length;
 
+        // Verificar si todos los items tienen un peso mayor que la capacidad de la mochila
+        boolean todosItemsMuyPesados = true;
+        for (Item item : items) {
+            if (item.getPeso() <= capacidad) {
+                todosItemsMuyPesados = false;
+                break;
+            }
+        }
+        if (todosItemsMuyPesados) {
+            System.out.println("Todos los items tienen un peso mayor que la capacidad de la mochila.");
+            return new Mochila(capacidad, new Item[0]);
+        }
+
         // Inicializar población
         boolean[][] poblacion = new boolean[TAMANO_POBLACION][n];
         Random random = new Random();
-        
+
         for (int i = 0; i < TAMANO_POBLACION; i++) {
             for (int j = 0; j < n; j++) {
                 poblacion[i][j] = random.nextBoolean();
@@ -104,6 +117,13 @@ public class Genetico {
     private static int seleccionar(int[] aptitud) {
         Random random = new Random();
         int totalAptitud = Arrays.stream(aptitud).sum();
+
+        // Verificar si la suma total de aptitud es cero
+        if (totalAptitud <= 0) {
+            // Si es así, seleccionar un individuo aleatoriamente
+            return random.nextInt(aptitud.length);
+        }
+
         int punto = random.nextInt(totalAptitud);
         int suma = 0;
         for (int i = 0; i < aptitud.length; i++) {
@@ -112,7 +132,7 @@ public class Genetico {
                 return i;
             }
         }
-        return aptitud.length - 1;
+        return aptitud.length - 1; // Fallback por si no se cumple la condición en el bucle
     }
 
     private static boolean[] cruzar(boolean[] padre1, boolean[] padre2) {
