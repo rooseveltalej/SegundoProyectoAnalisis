@@ -21,7 +21,6 @@ public class Genetico {
             }
         }
         if (todosItemsMuyPesados) {
-            System.out.println("Todos los items tienen un peso mayor que la capacidad de la mochila.");
             return new Mochila(capacidad, new Item[0]);
         }
 
@@ -72,6 +71,22 @@ public class Genetico {
             poblacion = nuevaPoblacion;
         }
 
+        //Imprimir la nueva poblacion con sus pesos y valores
+        for (int i = 0; i < TAMANO_POBLACION; i++) {
+            int pesoTotal = 0;
+            int valorTotal = 0;
+            for (int j = 0; j < n; j++) {
+                if (poblacion[i][j]) {
+                    System.out.print("1 ");
+                    pesoTotal += items[j].getPeso();
+                    valorTotal += items[j].getValor();
+                    } else {
+                        System.out.print("0 ");
+                        }
+                        }
+                        System.out.println("Peso: " + pesoTotal + " Valor: " + valorTotal);
+                        }
+
         // Encontrar la mejor solución
         int mejorAptitud = 0;
         boolean[] mejorIndividuo = null;
@@ -106,6 +121,15 @@ public class Genetico {
                 valorTotalFinal += items[i].getValor();
             }
         }
+
+        // Item{nombre=Item1peso=2, valor=25}
+        // Item{nombre=Item2peso=8, valor=24}
+        // Item{nombre=Item3peso=49, valor=11}
+        // Item{nombre=Item4peso=41, valor=33}
+        // Item{nombre=Item5peso=33, valor=1}
+        // Item{nombre=Item6peso=10, valor=34}
+        // Item{nombre=Item7peso=14, valor=16}
+        // Item{nombre=Item8peso=44, valor=48}
 
         Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados);
         resultado.setPesoTotal(pesoTotalFinal);

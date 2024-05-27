@@ -38,7 +38,7 @@ public class Main {
             items2[items2.length - 1] = new Item("Item" + (i + 1), peso, valor);
         }
 
-        Mochila mochila2 = new Mochila(10, items2);
+        Mochila mochila2 = new Mochila(50, items2);
 
         //Imprimir todos los valores que se encuentren en items2
         System.out.println("Items generados aleatoriamente de la mochila2: ");
@@ -58,6 +58,36 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA2.getItems()).map(Item::getNombre).toList());
             //Prueba 10 items. Pero necesito saber si lo hago con los valores generados de esa forma o de otra manera
+
+    Item[] items3 = {};
+    int peso3;
+    int valor3;
+        for (int i = 0; i < 20; i++) {
+            peso3 = (int)(Math.random() * 50 + 1);
+            valor3 = (int)(Math.random() * 50 + 1);
+            items3 = Arrays.copyOf(items3, items3.length + 1);
+            items3[items3.length - 1] = new Item("Item" + (i + 1), peso3, valor3);
+        }
+
+        Mochila mochila3 = new Mochila(150, items3);
+
+        //Imprimir todos los valores que se encuentren en items2
+        System.out.println("Items generados aleatoriamente de la mochila3: ");
+        for (Item item : items3) {
+            System.out.println(item);
+        }
+        
+        //Resolver usando programación dinámica
+        Mochila resultadoDP3 = Dinamico.resolverMochilaDP(mochila3);
+        System.out.println("Resultado usando Programación Dinámica: " + resultadoDP3);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoDP3.getItems()).map(Item::getNombre).toList());
+
+        //Resolver usando algoritmo genético
+        Mochila resultadoGA3 = Genetico.resolverMochilaGA(mochila3);
+        System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA3);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoGA3.getItems()).map(Item::getNombre).toList()); 
     }
 } //Hola mundo
 
