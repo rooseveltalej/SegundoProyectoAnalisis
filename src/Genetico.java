@@ -1,4 +1,3 @@
-//Fecha de creación: 10/05/2024
 import java.util.Arrays;
 import java.util.Random;
 
@@ -34,6 +33,8 @@ public class Genetico {
             }
         }
 
+        int[][] padres = new int[TAMANO_POBLACION][2]; // Arreglo para almacenar los padres de cada hijo
+
         for (int generacion = 0; generacion < NUMERO_GENERACIONES; generacion++) {
             // Evaluar aptitud
             int[] aptitud = new int[TAMANO_POBLACION];
@@ -58,12 +59,25 @@ public class Genetico {
             for (int i = 0; i < TAMANO_POBLACION; i++) {
                 int padre1 = seleccionar(aptitud);
                 int padre2 = seleccionar(aptitud);
+                padres[i][0] = padre1;
+                padres[i][1] = padre2;
                 nuevaPoblacion[i] = cruzar(poblacion[padre1], poblacion[padre2]);
             }
 
-            // Mutación
+            // Mutación y verificación de duplicados
             for (int i = 0; i < TAMANO_POBLACION; i++) {
                 if (random.nextDouble() < TASA_MUTACION) {
+                    mutar(nuevaPoblacion[i]);
+                }
+                // Verificar duplicados
+                for (int j = 0; j < i; j++) {
+                    if (Arrays.equals(nuevaPoblacion[i], nuevaPoblacion[j])) {
+                        mutar(nuevaPoblacion[i]);
+                    }
+                }
+                // Verificar con los padres
+                if (Arrays.equals(nuevaPoblacion[i], poblacion[padres[i][0]]) ||
+                    Arrays.equals(nuevaPoblacion[i], poblacion[padres[i][1]])) {
                     mutar(nuevaPoblacion[i]);
                 }
             }
@@ -71,7 +85,7 @@ public class Genetico {
             poblacion = nuevaPoblacion;
         }
 
-        //Imprimir la nueva poblacion con sus pesos y valores
+        // Imprimir la nueva población con sus pesos y valores
         for (int i = 0; i < TAMANO_POBLACION; i++) {
             int pesoTotal = 0;
             int valorTotal = 0;
@@ -80,12 +94,12 @@ public class Genetico {
                     System.out.print("1 ");
                     pesoTotal += items[j].getPeso();
                     valorTotal += items[j].getValor();
-                    } else {
-                        System.out.print("0 ");
-                        }
-                        }
-                        System.out.println("Peso: " + pesoTotal + " Valor: " + valorTotal);
-                        }
+                } else {
+                    System.out.print("0 ");
+                }
+            }
+            System.out.println("Peso: " + pesoTotal + " Valor: " + valorTotal + " Padres: [" + padres[i][0] + ", " + padres[i][1] + "]");
+        }
 
         // Encontrar la mejor solución
         int mejorAptitud = 0;
@@ -121,15 +135,6 @@ public class Genetico {
                 valorTotalFinal += items[i].getValor();
             }
         }
-
-        // Item{nombre=Item1peso=2, valor=25}
-        // Item{nombre=Item2peso=8, valor=24}
-        // Item{nombre=Item3peso=49, valor=11}
-        // Item{nombre=Item4peso=41, valor=33}
-        // Item{nombre=Item5peso=33, valor=1}
-        // Item{nombre=Item6peso=10, valor=34}
-        // Item{nombre=Item7peso=14, valor=16}
-        // Item{nombre=Item8peso=44, valor=48}
 
         Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados);
         resultado.setPesoTotal(pesoTotalFinal);
@@ -174,7 +179,14 @@ public class Genetico {
 
     private static void mutar(boolean[] individuo) {
         Random random = new Random();
-        int puntoMutacion = random.nextInt(individuo.length);
-        individuo[puntoMutacion] = !individuo[puntoMutacion];
+        for (int i = 0; i < individuo.length; i++) {
+            if (random.nextDouble() < TASA_MUTACION) {
+                individuo[i] = !individuo[i];
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // Aquí puedes probar tu algoritmo genético
     }
 }
