@@ -12,7 +12,7 @@ public class Main {
             new Item("Cepillo de dientes",2,10)
         };
 
-        Mochila mochila = new Mochila(6, items);
+        Mochila mochila = new Mochila(6, items); // Capacidad de la mochila: 6
 
         // Resolver usando programación dinámica
         Mochila resultadoDP = Dinamico.resolverMochilaDP(mochila);
@@ -38,7 +38,7 @@ public class Main {
             items2[items2.length - 1] = new Item("Item" + (i + 1), peso, valor);
         }
 
-        Mochila mochila2 = new Mochila(50, items2);
+        Mochila mochila2 = new Mochila(50, items2); // Capacidad de la mochila: 50
 
         //Imprimir todos los valores que se encuentren en items2
         System.out.println("Items generados aleatoriamente de la mochila2: ");
@@ -69,7 +69,7 @@ public class Main {
             items3[items3.length - 1] = new Item("Item" + (i + 1), peso3, valor3);
         }
 
-        Mochila mochila3 = new Mochila(150, items3);
+        Mochila mochila3 = new Mochila(70, items3); // Capacidad de la mochila: 70
 
         //Imprimir todos los valores que se encuentren en items2
         System.out.println("Items generados aleatoriamente de la mochila3: ");
@@ -88,7 +88,104 @@ public class Main {
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA3);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA3.getItems()).map(Item::getNombre).toList()); 
-    }
-} //Hola mundo
+    
+
+        Item[] items4 = {};
+        int peso4;
+        int valor4;
+
+        for (int i = 0; i < 30; i++) {
+            peso4 = (int)(Math.random() * 50 + 1);
+            valor4 = (int)(Math.random() * 50 + 1);
+            items4 = Arrays.copyOf(items4, items4.length + 1);
+            items4[items4.length - 1] = new Item("Item" + (i + 1), peso4, valor4);
+        }
+
+        Mochila mochila4 = new Mochila(100, items4); // Capacidad de la mochila: 100
+
+        //Imprimir todos los valores que se encuentren en items4
+        System.out.println("Items generados aleatoriamente de la mochila4: ");
+        for (Item item : items4) {
+            System.out.println(item);
+        }
+
+        //Resolver usando programación dinámica
+        Mochila resultadoDP4 = Dinamico.resolverMochilaDP(mochila4);
+        System.out.println("Resultado usando Programación Dinámica: " + resultadoDP4);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoDP4.getItems()).map(Item::getNombre).toList());
+
+        //Resolver usando algoritmo genético
+        Mochila resultadoGA4 = Genetico.resolverMochilaGA(mochila4);
+        System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA4);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoGA4.getItems()).map(Item::getNombre).toList()); 
+
+        Item[] items5 = {};
+        int peso5;
+        int valor5;
+
+        for (int i = 0; i < 40; i++) {
+            peso5 = (int)(Math.random() * 50 + 1);
+            valor5 = (int)(Math.random() * 50 + 1);
+            items5 = Arrays.copyOf(items5, items5.length + 1);
+            items5[items5.length - 1] = new Item("Item" + (i + 1), peso5, valor5);
+        }
+
+        Mochila mochila5 = new Mochila(150, items5); // Capacidad de la mochila: 150
+
+        //Imprimir todos los valores que se encuentren en items5
+        System.out.println("Items generados aleatoriamente de la mochila5: ");
+        for (Item item : items5) {
+            System.out.println(item);
+        }
+
+        //Resolver usando programación dinámica
+        Mochila resultadoDP5 = Dinamico.resolverMochilaDP(mochila5);
+        System.out.println("Resultado usando Programación Dinámica: " + resultadoDP5);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoDP5.getItems()).map(Item::getNombre).toList());
+
+        //Resolver usando algoritmo genético
+        Mochila resultadoGA5 = Genetico.resolverMochilaGA(mochila5);
+        System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA5);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoGA5.getItems()).map(Item::getNombre).toList()); 
+
+        Item[] items6 = {};
+        int peso6;
+        int valor6;
+
+        for (int i = 0; i < 50; i++) {
+            peso6 = (int)(Math.random() * 50 + 1);
+            valor6 = (int)(Math.random() * 50 + 1);
+            items6 = Arrays.copyOf(items6, items6.length + 1);
+            items6[items6.length - 1] = new Item("Item" + (i + 1), peso6, valor6);
+        }
+
+        Mochila mochila6 = new Mochila(200, items6); // Capacidad de la mochila: 200
+
+        //Imprimir todos los valores que se encuentren en items6
+        System.out.println("Items generados aleatoriamente de la mochila6: ");
+        for (Item item : items6) {
+            System.out.println(item);
+        }
+
+        //Resolver usando programación dinámica
+        Mochila resultadoDP6 = Dinamico.resolverMochilaDP(mochila6);
+        System.out.println("Resultado usando Programación Dinámica: " + resultadoDP6);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoDP6.getItems()).map(Item::getNombre).toList());
+
+
+        //Resolver usando algoritmo genético
+        Mochila resultadoGA6 = Genetico.resolverMochilaGA(mochila6);
+        System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA6);
+        System.out.println("Items seleccionados: " + 
+            Arrays.stream(resultadoGA6.getItems()).map(Item::getNombre).toList());
+
+    
+}
+}
 
 

@@ -123,18 +123,28 @@ public class Genetico {
         int pesoTotalFinal = 0;
         int valorTotalFinal = 0;
         int count = 0;
-        for (boolean b : mejorIndividuo) {
-            if (b) count++;
+        try{
+            for (boolean b : mejorIndividuo) {
+                if (b) count++;
+            }
+        }catch(NullPointerException e){
+            System.out.println("No se encontró un mejor individuo");
         }
         Item[] itemsSeleccionados = new Item[count];
         int index = 0;
-        for (int i = 0; i < mejorIndividuo.length; i++) {
-            if (mejorIndividuo[i]) {
-                itemsSeleccionados[index++] = items[i];
-                pesoTotalFinal += items[i].getPeso();
-                valorTotalFinal += items[i].getValor();
+        if (mejorIndividuo != null) {
+            for (int i = 0; i < mejorIndividuo.length; i++) {
+                if (mejorIndividuo[i]) {
+                    itemsSeleccionados[index++] = items[i];
+                    pesoTotalFinal += items[i].getPeso();
+                    valorTotalFinal += items[i].getValor();
+                }
             }
         }
+        else{
+            System.out.println("No se encontró un mejor individuo");
+        }
+        
 
         Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados);
         resultado.setPesoTotal(pesoTotalFinal);
