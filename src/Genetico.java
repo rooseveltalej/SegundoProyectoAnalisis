@@ -185,8 +185,4 @@ public class Genetico {
             }
         }
     }
-
-    public static void main(String[] args) {
-        // Aquí puedes probar tu algoritmo genético
-    }
 }
