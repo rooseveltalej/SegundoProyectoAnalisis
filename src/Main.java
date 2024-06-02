@@ -59,15 +59,15 @@ public class Main {
             Arrays.stream(resultadoGA2.getItems()).map(Item::getNombre).toList());
             //Prueba 10 items. Pero necesito saber si lo hago con los valores generados de esa forma o de otra manera
 
-    Item[] items3 = {};
-    int peso3;
-    int valor3;
-        for (int i = 0; i < 20; i++) {
-            peso3 = (int)(Math.random() * 50 + 1);
-            valor3 = (int)(Math.random() * 50 + 1);
-            items3 = Arrays.copyOf(items3, items3.length + 1);
-            items3[items3.length - 1] = new Item("Item" + (i + 1), peso3, valor3);
-        }
+        Item[] items3 = {};
+        int peso3;
+        int valor3;
+            for (int i = 0; i < 20; i++) {
+                peso3 = (int)(Math.random() * 50 + 1);
+                valor3 = (int)(Math.random() * 50 + 1);
+                items3 = Arrays.copyOf(items3, items3.length + 1);
+                items3[items3.length - 1] = new Item("Item" + (i + 1), peso3, valor3);
+            }
 
         Mochila mochila3 = new Mochila(70, items3); // Capacidad de la mochila: 70
 
@@ -184,7 +184,7 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA6.getItems()).map(Item::getNombre).toList());
 
-    
+        
 }
 }
 
