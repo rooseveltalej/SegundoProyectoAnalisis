@@ -12,6 +12,13 @@ public class Main {
             new Item("Cepillo de dientes",2,10)
         };
 
+        System.out.println("Items de la mochila: ");
+        for (Item item : items) {
+            System.out.println(item);
+        }
+
+
+
         Mochila mochila = new Mochila(6, items); // Capacidad de la mochila: 6
 
         // Resolver usando programación dinámica
@@ -21,6 +28,7 @@ public class Main {
             Arrays.stream(resultadoDP.getItems()).map(Item::getNombre).toList());
 
         // Resolver usando algoritmo genético
+        Genetico.TAMANO_POBLACION = 3;
         Mochila resultadoGA = Genetico.resolverMochilaGA(mochila);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA);
         System.out.println("Items seleccionados: " + 
@@ -53,6 +61,7 @@ public class Main {
             Arrays.stream(resultadoDP2.getItems()).map(Item::getNombre).toList());
 
         //Resolver usando algoritmo genético
+        Genetico.TAMANO_POBLACION = 10;
         Mochila resultadoGA2 = Genetico.resolverMochilaGA(mochila2);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA2);
         System.out.println("Items seleccionados: " + 
@@ -84,6 +93,7 @@ public class Main {
             Arrays.stream(resultadoDP3.getItems()).map(Item::getNombre).toList());
 
         //Resolver usando algoritmo genético
+        Genetico.TAMANO_POBLACION = 20;
         Mochila resultadoGA3 = Genetico.resolverMochilaGA(mochila3);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA3);
         System.out.println("Items seleccionados: " + 
@@ -116,6 +126,7 @@ public class Main {
             Arrays.stream(resultadoDP4.getItems()).map(Item::getNombre).toList());
 
         //Resolver usando algoritmo genético
+        Genetico.TAMANO_POBLACION = 30;
         Mochila resultadoGA4 = Genetico.resolverMochilaGA(mochila4);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA4);
         System.out.println("Items seleccionados: " + 
@@ -147,6 +158,7 @@ public class Main {
             Arrays.stream(resultadoDP5.getItems()).map(Item::getNombre).toList());
 
         //Resolver usando algoritmo genético
+        Genetico.TAMANO_POBLACION = 40;
         Mochila resultadoGA5 = Genetico.resolverMochilaGA(mochila5);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA5);
         System.out.println("Items seleccionados: " + 
@@ -179,12 +191,12 @@ public class Main {
 
 
         //Resolver usando algoritmo genético
+        Genetico.TAMANO_POBLACION = 50;
         Mochila resultadoGA6 = Genetico.resolverMochilaGA(mochila6);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA6);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA6.getItems()).map(Item::getNombre).toList());
 
-        
 }
 }
 

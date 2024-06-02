@@ -2,26 +2,15 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Genetico {
-    private static final int TAMANO_POBLACION = 10; // La cantidad de objetos que se van a evaluar
+    static int TAMANO_POBLACION = 20;
     private static final double TASA_MUTACION = 0.05;
     private static final int NUMERO_GENERACIONES = 20;
+    private static final double PENALIDAD = 1000.0;
 
     public static Mochila resolverMochilaGA(Mochila mochila) {
         int capacidad = mochila.getCapacidad();
         Item[] items = mochila.getItems();
         int n = items.length;
-
-        // Verificar si todos los items tienen un peso mayor que la capacidad de la mochila
-        boolean todosItemsMuyPesados = true;
-        for (Item item : items) {
-            if (item.getPeso() <= capacidad) {
-                todosItemsMuyPesados = false;
-                break;
-            }
-        }
-        if (todosItemsMuyPesados) {
-            return new Mochila(capacidad, new Item[0]);
-        }
 
         // Inicializar población
         boolean[][] poblacion = new boolean[TAMANO_POBLACION][n];
@@ -33,24 +22,17 @@ public class Genetico {
             }
         }
 
-        int[][] padres = new int[TAMANO_POBLACION][2]; // Arreglo para almacenar los padres de cada hijo
+        boolean[] mejorIndividuo = null;
+        double mejorAptitud = Double.NEGATIVE_INFINITY;
 
         for (int generacion = 0; generacion < NUMERO_GENERACIONES; generacion++) {
             // Evaluar aptitud
-            int[] aptitud = new int[TAMANO_POBLACION];
+            double[] aptitud = new double[TAMANO_POBLACION];
             for (int i = 0; i < TAMANO_POBLACION; i++) {
-                int pesoTotal = 0;
-                int valorTotal = 0;
-                for (int j = 0; j < n; j++) {
-                    if (poblacion[i][j]) {
-                        pesoTotal += items[j].getPeso();
-                        valorTotal += items[j].getValor();
-                    }
-                }
-                if (pesoTotal <= capacidad) {
-                    aptitud[i] = valorTotal;
-                } else {
-                    aptitud[i] = 0;
+                aptitud[i] = evaluarAptitud(poblacion[i], items, capacidad);
+                if (aptitud[i] > mejorAptitud) {
+                    mejorAptitud = aptitud[i];
+                    mejorIndividuo = Arrays.copyOf(poblacion[i], n);
                 }
             }
 
@@ -59,15 +41,13 @@ public class Genetico {
             for (int i = 0; i < TAMANO_POBLACION; i++) {
                 int padre1 = seleccionar(aptitud);
                 int padre2 = seleccionar(aptitud);
-                padres[i][0] = padre1;
-                padres[i][1] = padre2;
-                nuevaPoblacion[i] = cruzar(poblacion[padre1], poblacion[padre2]);
+                nuevaPoblacion[i] = cruzar(poblacion[padre1], poblacion[padre2], items, capacidad);
             }
 
-            // Mutación y verificación de duplicados
+            // Mutación dirigida y evitar duplicados
             for (int i = 0; i < TAMANO_POBLACION; i++) {
                 if (random.nextDouble() < TASA_MUTACION) {
-                    mutar(nuevaPoblacion[i]);
+                    mutarDirigida(nuevaPoblacion[i], items, capacidad);
                 }
                 // Verificar duplicados
                 for (int j = 0; j < i; j++) {
@@ -75,76 +55,33 @@ public class Genetico {
                         mutar(nuevaPoblacion[i]);
                     }
                 }
-                // Verificar con los padres
-                if (Arrays.equals(nuevaPoblacion[i], poblacion[padres[i][0]]) ||
-                    Arrays.equals(nuevaPoblacion[i], poblacion[padres[i][1]])) {
-                    mutar(nuevaPoblacion[i]);
-                }
+            }
+
+            // Implementar elitismo: mantener el mejor individuo en la nueva población
+            if (mejorIndividuo != null) {
+                nuevaPoblacion[0] = mejorIndividuo;
             }
 
             poblacion = nuevaPoblacion;
-        }
-
-        // Imprimir la nueva población con sus pesos y valores
-        for (int i = 0; i < TAMANO_POBLACION; i++) {
-            int pesoTotal = 0;
-            int valorTotal = 0;
-            for (int j = 0; j < n; j++) {
-                if (poblacion[i][j]) {
-                    System.out.print("1 ");
-                    pesoTotal += items[j].getPeso();
-                    valorTotal += items[j].getValor();
-                } else {
-                    System.out.print("0 ");
-                }
-            }
-            System.out.println("Peso: " + pesoTotal + " Valor: " + valorTotal + " Padres: [" + padres[i][0] + ", " + padres[i][1] + "]");
-        }
-
-        // Encontrar la mejor solución
-        int mejorAptitud = 0;
-        boolean[] mejorIndividuo = null;
-        for (int i = 0; i < TAMANO_POBLACION; i++) {
-            int pesoTotal = 0;
-            int valorTotal = 0;
-            for (int j = 0; j < n; j++) {
-                if (poblacion[i][j]) {
-                    pesoTotal += items[j].getPeso();
-                    valorTotal += items[j].getValor();
-                }
-            }
-            if (pesoTotal <= capacidad && valorTotal > mejorAptitud) {
-                mejorAptitud = valorTotal;
-                mejorIndividuo = poblacion[i];
-            }
         }
 
         // Construir la lista de items seleccionados
         int pesoTotalFinal = 0;
         int valorTotalFinal = 0;
         int count = 0;
-        try{
-            for (boolean b : mejorIndividuo) {
-                if (b) count++;
-            }
-        }catch(NullPointerException e){
-            System.out.println("No se encontró un mejor individuo");
+        for (boolean b : mejorIndividuo) {
+            if (b) count++;
         }
+
         Item[] itemsSeleccionados = new Item[count];
         int index = 0;
-        if (mejorIndividuo != null) {
-            for (int i = 0; i < mejorIndividuo.length; i++) {
-                if (mejorIndividuo[i]) {
-                    itemsSeleccionados[index++] = items[i];
-                    pesoTotalFinal += items[i].getPeso();
-                    valorTotalFinal += items[i].getValor();
-                }
+        for (int i = 0; i < mejorIndividuo.length; i++) {
+            if (mejorIndividuo[i]) {
+                itemsSeleccionados[index++] = items[i];
+                pesoTotalFinal += items[i].getPeso();
+                valorTotalFinal += items[i].getValor();
             }
         }
-        else{
-            System.out.println("No se encontró un mejor individuo");
-        }
-        
 
         Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados);
         resultado.setPesoTotal(pesoTotalFinal);
@@ -153,37 +90,57 @@ public class Genetico {
         return resultado;
     }
 
-    private static int seleccionar(int[] aptitud) {
-        Random random = new Random();
-        int totalAptitud = Arrays.stream(aptitud).sum();
+    private static double evaluarAptitud(boolean[] individuo, Item[] items, int capacidad) {
+        int pesoTotal = 0;
+        int valorTotal = 0;
+        for (int i = 0; i < individuo.length; i++) {
+            if (individuo[i]) {
+                pesoTotal += items[i].getPeso();
+                valorTotal += items[i].getValor();
+            }
+        }
+        if (pesoTotal <= capacidad) {
+            return valorTotal;
+        } else {
+            return valorTotal - PENALIDAD * (pesoTotal - capacidad);
+        }
+    }
 
-        // Verificar si la suma total de aptitud es cero
+    private static int seleccionar(double[] aptitud) {
+        Random random = new Random();
+        double totalAptitud = Arrays.stream(aptitud).sum();
+
         if (totalAptitud <= 0) {
-            // Si es así, seleccionar un individuo aleatoriamente
             return random.nextInt(aptitud.length);
         }
 
-        int punto = random.nextInt(totalAptitud);
-        int suma = 0;
+        double punto = random.nextDouble() * totalAptitud;
+        double suma = 0;
         for (int i = 0; i < aptitud.length; i++) {
             suma += aptitud[i];
             if (suma > punto) {
                 return i;
             }
         }
-        return aptitud.length - 1; // Fallback por si no se cumple la condición en el bucle
+        return aptitud.length - 1;
     }
 
-    private static boolean[] cruzar(boolean[] padre1, boolean[] padre2) {
+    private static boolean[] cruzar(boolean[] padre1, boolean[] padre2, Item[] items, int capacidad) {
         Random random = new Random();
-        int puntoCruce = random.nextInt(padre1.length);
+        int puntoCruce1 = random.nextInt(padre1.length);
+        int puntoCruce2 = random.nextInt(padre1.length - puntoCruce1) + puntoCruce1;
         boolean[] descendiente = new boolean[padre1.length];
-        for (int i = 0; i < puntoCruce; i++) {
+        for (int i = 0; i < puntoCruce1; i++) {
             descendiente[i] = padre1[i];
         }
-        for (int i = puntoCruce; i < padre2.length; i++) {
+        for (int i = puntoCruce1; i < puntoCruce2; i++) {
             descendiente[i] = padre2[i];
         }
+        for (int i = puntoCruce2; i < padre2.length; i++) {
+            descendiente[i] = padre1[i];
+        }
+        // Corregir si el descendiente excede la capacidad
+        corregir(descendiente, items, capacidad);
         return descendiente;
     }
 
@@ -192,6 +149,48 @@ public class Genetico {
         for (int i = 0; i < individuo.length; i++) {
             if (random.nextDouble() < TASA_MUTACION) {
                 individuo[i] = !individuo[i];
+            }
+        }
+    }
+
+    private static void mutarDirigida(boolean[] individuo, Item[] items, int capacidad) {
+        Random random = new Random();
+        int n = individuo.length;
+        int intento = 0;
+        while (intento < 10) {
+            int index = random.nextInt(n);
+            individuo[index] = !individuo[index];
+
+            int pesoTotal = 0;
+            for (int i = 0; i < n; i++) {
+                if (individuo[i]) {
+                    pesoTotal += items[i].getPeso();
+                }
+            }
+
+            if (pesoTotal <= capacidad) {
+                return;
+            } else {
+                individuo[index] = !individuo[index];
+            }
+            intento++;
+        }
+    }
+
+    private static void corregir(boolean[] individuo, Item[] items, int capacidad) {
+        int pesoTotal = 0;
+        for (int i = 0; i < individuo.length; i++) {
+            if (individuo[i]) {
+                pesoTotal += items[i].getPeso();
+            }
+        }
+
+        Random random = new Random();
+        while (pesoTotal > capacidad) {
+            int index = random.nextInt(individuo.length);
+            if (individuo[index]) {
+                individuo[index] = false;
+                pesoTotal -= items[index].getPeso();
             }
         }
     }
