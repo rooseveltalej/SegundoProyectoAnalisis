@@ -23,7 +23,7 @@ public class Genetico {
         }
 
         int[] mejorIndividuo = null;
-        double mejorAptitud = 0.0;
+        double mejorAptitud = Double.NEGATIVE_INFINITY;
 
         for (int generacion = 0; generacion < NUMERO_GENERACIONES; generacion++) {
             // Evaluar aptitud
@@ -57,20 +57,12 @@ public class Genetico {
             // Mutación dirigida y evitar duplicados
             for (int i = 0; i < TAMANO_POBLACION; i++) {
                 if (random.nextDouble() < TASA_MUTACION) {
-                    int[] mutacionOriginal = Arrays.copyOf(nuevaPoblacion[i], nuevaPoblacion[i].length);
                     mutarDirigida(nuevaPoblacion[i], items, capacidad);
-                    double puntuacionMutacion = evaluarAptitud(nuevaPoblacion[i], items, capacidad);
-
-                    System.out.println("Mutación aplicada a " + Arrays.toString(mutacionOriginal) + ": " + Arrays.toString(nuevaPoblacion[i]) + " puntuación: " + puntuacionMutacion);
                 }
                 // Verificar duplicados
                 for (int j = 0; j < i; j++) {
                     if (Arrays.equals(nuevaPoblacion[i], nuevaPoblacion[j])) {
-                        int[] mutacionOriginal = Arrays.copyOf(nuevaPoblacion[i], nuevaPoblacion[i].length);
                         mutar(nuevaPoblacion[i]);
-                        double puntuacionMutacion = evaluarAptitud(nuevaPoblacion[i], items, capacidad);
-
-                        System.out.println("Mutación aplicada a " + Arrays.toString(mutacionOriginal) + ": " + Arrays.toString(nuevaPoblacion[i]) + " puntuación: " + puntuacionMutacion);
                     }
                 }
             }
@@ -165,9 +157,9 @@ public class Genetico {
         // Corregir si el descendiente excede la capacidad
         corregir(descendiente, items, capacidad);
 
-        // Imprimir los cromosomas de los padres, del descendiente y su origen
-        //System.out.println("Padre 1: " + Arrays.toString(padre1));
-        //System.out.println("Padre 2: " + Arrays.toString(padre2));
+        // // Imprimir los cromosomas de los padres, del descendiente y su origen
+        // System.out.println("Padre 1: " + Arrays.toString(padre1));
+        // System.out.println("Padre 2: " + Arrays.toString(padre2));
         //System.out.println("Descendiente: " + Arrays.toString(descendiente));
         System.out.println("Origen descendiente: " + descendienteOrigen.toString().trim());
 
@@ -179,15 +171,6 @@ public class Genetico {
         for (int i = 0; i < individuo.length; i++) {
             if (random.nextDouble() < TASA_MUTACION) {
                 individuo[i] = 1 - individuo[i];
-            }
-        }
-    }
-
-    private static void corregir(int[] individuo, Item[] items, int capacidad) {
-        int pesoTotal = 0;
-        for (int i = 0; i < individuo.length; i++) {
-            if (individuo[i] == 1) {
-                pesoTotal += items[i].getPeso();
             }
         }
     }
@@ -216,4 +199,21 @@ public class Genetico {
         }
     }
 
+    private static void corregir(int[] individuo, Item[] items, int capacidad) {
+        int pesoTotal = 0;
+        for (int i = 0; i < individuo.length; i++) {
+            if (individuo[i] == 1) {
+                pesoTotal += items[i].getPeso();
+            }
+        }
+
+        Random random = new Random();
+        while (pesoTotal > capacidad) {
+            int index = random.nextInt(individuo.length);
+            if (individuo[index] == 1) {
+                individuo[index] = 0;
+                pesoTotal -= items[index].getPeso();
+            }
+        }
+    }
 }
