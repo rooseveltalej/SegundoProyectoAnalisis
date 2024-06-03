@@ -1,8 +1,54 @@
 //Fecha de creación: 10/05/2024
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            // esperar entrada de usuario
+            System.out.println("Seleccione una opción: ");
+            System.out.println("1. Mochila con 5 items");
+            System.out.println("2. Mochila con 10 items");
+            System.out.println("3. Mochila con 20 items");
+            System.out.println("4. Mochila con 30 items");
+            System.out.println("5. Mochila con 40 items");
+            System.out.println("6. Mochila con 50 items");
+            System.out.println("7. Salir");
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    Mochila1();
+                    break;
+                case 2:
+                    Mochila2();
+                    break;
+                case 3:
+                    Mochila3();
+                    break;
+                case 4:
+                    Mochila4();
+                    break;
+                case 5:
+                    Mochila5();
+                    break;
+                case 6:
+                    Mochila6();
+                    break;
+                case 7:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Opción inválida");
+            
+        }
+    }
+    
+
+}
+
+    public static void Mochila1() {
         // Ejercicio de los 5 objetos iniciales 
         Item[] items = {
             new Item("Bloqueador", 3, 9),
@@ -16,7 +62,11 @@ public class Main {
         for (Item item : items) {
             System.out.println(item);
         }
-
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         Mochila mochila = new Mochila(6, items); // Capacidad de la mochila: 6
@@ -27,6 +77,8 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP.getItems()).map(Item::getNombre).toList());
 
+        System.out.println("/ / / / Genético / / / /");
+
         // Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 3;
         Mochila resultadoGA = Genetico.resolverMochilaGA(mochila);
@@ -34,8 +86,10 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA.getItems()).map(Item::getNombre).toList());
              //Prueba 5 items
-        
+            
+    }
 
+    public static void Mochila2(){
         Item[] items2 = {};
         int peso;
         int valor;
@@ -53,13 +107,18 @@ public class Main {
         for (Item item : items2) {
             System.out.println(item);
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         //Resolver usando programación dinámica
         Mochila resultadoDP2 = Dinamico.resolverMochilaDP(mochila2);
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP2);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP2.getItems()).map(Item::getNombre).toList());
-
+        System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 10;
         Mochila resultadoGA2 = Genetico.resolverMochilaGA(mochila2);
@@ -67,7 +126,9 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA2.getItems()).map(Item::getNombre).toList());
             //Prueba 10 items. Pero necesito saber si lo hago con los valores generados de esa forma o de otra manera
+    }
 
+    public static void Mochila3(){
         Item[] items3 = {};
         int peso3;
         int valor3;
@@ -85,6 +146,11 @@ public class Main {
         for (Item item : items3) {
             System.out.println(item);
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         //Resolver usando programación dinámica
         Mochila resultadoDP3 = Dinamico.resolverMochilaDP(mochila3);
@@ -92,14 +158,18 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP3.getItems()).map(Item::getNombre).toList());
 
+        System.out.println("/ / / / Genético / / / /");
+
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 20;
         Mochila resultadoGA3 = Genetico.resolverMochilaGA(mochila3);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA3);
         System.out.println("Items seleccionados: " + 
-            Arrays.stream(resultadoGA3.getItems()).map(Item::getNombre).toList()); 
-    
+            Arrays.stream(resultadoGA3.getItems()).map(Item::getNombre).toList());
+    }
 
+
+    public static void Mochila4(){
         Item[] items4 = {};
         int peso4;
         int valor4;
@@ -118,20 +188,27 @@ public class Main {
         for (Item item : items4) {
             System.out.println(item);
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Resolver usando programación dinámica
         Mochila resultadoDP4 = Dinamico.resolverMochilaDP(mochila4);
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP4);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP4.getItems()).map(Item::getNombre).toList());
-
+        System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 30;
         Mochila resultadoGA4 = Genetico.resolverMochilaGA(mochila4);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA4);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA4.getItems()).map(Item::getNombre).toList()); 
+    }
 
+    public static void Mochila5(){
         Item[] items5 = {};
         int peso5;
         int valor5;
@@ -150,20 +227,27 @@ public class Main {
         for (Item item : items5) {
             System.out.println(item);
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Resolver usando programación dinámica
         Mochila resultadoDP5 = Dinamico.resolverMochilaDP(mochila5);
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP5);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP5.getItems()).map(Item::getNombre).toList());
-
+        System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 40;
         Mochila resultadoGA5 = Genetico.resolverMochilaGA(mochila5);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA5);
         System.out.println("Items seleccionados: " + 
-            Arrays.stream(resultadoGA5.getItems()).map(Item::getNombre).toList()); 
+            Arrays.stream(resultadoGA5.getItems()).map(Item::getNombre).toList());
+    }
 
+    public static void Mochila6(){
         Item[] items6 = {};
         int peso6;
         int valor6;
@@ -182,6 +266,11 @@ public class Main {
         for (Item item : items6) {
             System.out.println(item);
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Resolver usando programación dinámica
         Mochila resultadoDP6 = Dinamico.resolverMochilaDP(mochila6);
@@ -189,15 +278,15 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP6.getItems()).map(Item::getNombre).toList());
 
-
+        System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 50;
         Mochila resultadoGA6 = Genetico.resolverMochilaGA(mochila6);
         System.out.println("Resultado usando Algoritmo Genético: " + resultadoGA6);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoGA6.getItems()).map(Item::getNombre).toList());
+    }
 
-}
 }
 
 
