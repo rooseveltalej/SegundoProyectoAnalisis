@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 
 public class Genetico {
@@ -25,6 +26,9 @@ public class Genetico {
         int[] mejorIndividuo = null;
         double mejorAptitud = Double.NEGATIVE_INFINITY;
 
+        // Almacenar las mejores poblaciones y sus puntuaciones
+        double[][] mejoresPoblaciones = new double[TAMANO_POBLACION][n + 1];
+
         for (int generacion = 0; generacion < NUMERO_GENERACIONES; generacion++) {
             // Evaluar aptitud
             double[] aptitud = new double[TAMANO_POBLACION];
@@ -34,6 +38,14 @@ public class Genetico {
                     mejorAptitud = aptitud[i];
                     mejorIndividuo = Arrays.copyOf(poblacion[i], n);
                 }
+            }
+
+            // Guardar las mejores poblaciones y sus puntuaciones
+            for (int i = 0; i < TAMANO_POBLACION; i++) {
+                for (int j = 0; j < n; j++) {
+                    mejoresPoblaciones[i][j] = poblacion[i][j];
+                }
+                mejoresPoblaciones[i][n] = aptitud[i];
             }
 
             // Selección
@@ -73,6 +85,33 @@ public class Genetico {
             }
 
             poblacion = nuevaPoblacion;
+        }
+
+        // Ordenar las poblaciones por puntuación
+        Arrays.sort(mejoresPoblaciones, new Comparator<double[]>() {
+            @Override
+            public int compare(double[] o1, double[] o2) {
+                return Double.compare(o2[n], o1[n]);
+            }
+        });
+
+        // Imprimir las 5 mejores poblaciones y sus puntuaciones
+        
+        if (TAMANO_POBLACION == 3){
+            System.out.println("Las 3 mejores poblaciones:");
+            System.out.println("Población 1: " + Arrays.toString(Arrays.copyOfRange(mejoresPoblaciones[0], 0, n)) +
+                    " puntuación: " + mejoresPoblaciones[0][n]);
+            System.out.println("Población 2: " + Arrays.toString(Arrays.copyOfRange(mejoresPoblaciones[1], 0, n)) +
+                    " puntuación: " + mejoresPoblaciones[1][n]);
+            System.out.println("Población 3: " + Arrays.toString(Arrays.copyOfRange(mejoresPoblaciones[2], 0, n)) +
+                    " puntuación: " + mejoresPoblaciones[2][n]);
+        }
+        else{
+            System.out.println("Las 5 mejores poblaciones:");
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Población " + (i + 1) + ": " + Arrays.toString(Arrays.copyOfRange(mejoresPoblaciones[i], 0, n)) +
+                        " puntuación: " + mejoresPoblaciones[i][n]);
+            }
         }
 
         // Construir la lista de items seleccionados
@@ -157,10 +196,6 @@ public class Genetico {
         // Corregir si el descendiente excede la capacidad
         corregir(descendiente, items, capacidad);
 
-        // // Imprimir los cromosomas de los padres, del descendiente y su origen
-        // System.out.println("Padre 1: " + Arrays.toString(padre1));
-        // System.out.println("Padre 2: " + Arrays.toString(padre2));
-        //System.out.println("Descendiente: " + Arrays.toString(descendiente));
         System.out.println("Origen descendiente: " + descendienteOrigen.toString().trim());
 
         return descendiente;

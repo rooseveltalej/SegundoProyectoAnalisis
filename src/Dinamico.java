@@ -1,4 +1,4 @@
-//Fecha de creación: 10/05/2024
+// Fecha de creación: 10/05/2024
 public class Dinamico {
     public static Mochila resolverMochilaDP(Mochila mochila) {
         int capacidad = mochila.getCapacidad();
@@ -16,6 +16,10 @@ public class Dinamico {
                 } else {
                     dp[i][w] = dp[i - 1][w];
                 }
+            }
+            // Imprimir los resultados cada 5 etapas
+            if (i % 5 == 0 || i == n) {
+                imprimirResultados(dp, i, items, capacidad);
             }
         }
 
@@ -44,5 +48,34 @@ public class Dinamico {
         resultado.setValorTotal(dp[n][capacidad]);
 
         return resultado;
+    }
+
+    private static void imprimirResultados(int[][] dp, int etapa, Item[] items, int capacidad) {
+        System.out.println("Resultados en la etapa " + etapa + ":");
+        int valorTotal = dp[etapa][capacidad];
+        int pesoTotal = 0;
+        boolean[] seleccionados = new boolean[etapa];
+        
+        int w = capacidad;
+        for (int i = etapa; i > 0 && valorTotal > 0; i--) {
+            if (valorTotal != dp[i - 1][w]) {
+                seleccionados[i - 1] = true;
+                pesoTotal += items[i - 1].getPeso();
+                valorTotal -= items[i - 1].getValor();
+                w -= items[i - 1].getPeso();
+            }
+        }
+
+        System.out.println("Valor total: " + dp[etapa][capacidad]);
+        System.out.println("Peso total: " + pesoTotal);
+
+        System.out.print("Items seleccionados: ");
+        for (int i = 0; i < seleccionados.length; i++) {
+            if (seleccionados[i]) {
+                System.out.print(items[i].getNombre() + " ");
+            }
+        }
+        System.out.println();
+        System.out.println();
     }
 }

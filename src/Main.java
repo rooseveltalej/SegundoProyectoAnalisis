@@ -77,6 +77,12 @@ public class Main {
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP.getItems()).map(Item::getNombre).toList());
 
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("/ / / / Genético / / / /");
 
         // Resolver usando algoritmo genético
@@ -118,6 +124,15 @@ public class Main {
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP2);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP2.getItems()).map(Item::getNombre).toList());
+
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 10;
@@ -157,6 +172,12 @@ public class Main {
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP3);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP3.getItems()).map(Item::getNombre).toList());
+        
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("/ / / / Genético / / / /");
 
@@ -199,6 +220,14 @@ public class Main {
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP4);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP4.getItems()).map(Item::getNombre).toList());
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 30;
@@ -238,6 +267,14 @@ public class Main {
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP5);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP5.getItems()).map(Item::getNombre).toList());
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
         Genetico.TAMANO_POBLACION = 40;
@@ -277,6 +314,14 @@ public class Main {
         System.out.println("Resultado usando Programación Dinámica: " + resultadoDP6);
         System.out.println("Items seleccionados: " + 
             Arrays.stream(resultadoDP6.getItems()).map(Item::getNombre).toList());
+
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         System.out.println("/ / / / Genético / / / /");
         //Resolver usando algoritmo genético
