@@ -6,6 +6,9 @@ public class Item {
 
     public Item(String nombre, int peso, int valor) {
         this.nombre = nombre;
+        if (peso < 0 || valor < 0) {
+            throw new IllegalArgumentException("El peso y el valor deben ser mayores o iguales a cero.");
+        }
         this.peso = peso;
         this.valor = valor;
     }

@@ -3,6 +3,7 @@ import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 public class Genetico {
+    // Variables para medicion
     public static long a = 0;
     public static long c = 0;
     public static long lineasEjecutadas = 0;
@@ -19,7 +20,7 @@ public class Genetico {
 
     // Método principal que resuelve el problema de la mochila usando un algoritmo genético
     public static Mochila resolverMochilaGA(Mochila mochila) {
-        Long startTime = System.nanoTime();
+        long startTime = System.nanoTime();
         int capacidad = mochila.getCapacidad(); a++;
         Item[] items = mochila.getItems(); a++;
         int n = items.length; a++;
