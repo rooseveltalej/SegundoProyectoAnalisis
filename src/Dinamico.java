@@ -10,14 +10,14 @@ public class Dinamico {
     public static long memoriaUsada = 0;
     // Método para resolver el problema de la mochila utilizando programación dinámica
     public static Mochila resolverMochilaDP(Mochila mochila) {
-        long startTime = System.nanoTime();
+        long startTime = System.nanoTime(); memoriaUsada += 64;
         // Obtener la capacidad de la mochila y los ítems disponibles
-        int capacidad = mochila.getCapacidad(); a++;
-        Item[] items = mochila.getItems(); a++;
-        int n = items.length; a++;
+        int capacidad = mochila.getCapacidad(); a++; memoriaUsada += 32;
+        Item[] items = mochila.getItems(); a++; memoriaUsada += 32;
+        int n = items.length; a++; memoriaUsada += 32;
 
         // Crear una matriz dp para almacenar los valores máximos
-        int[][] dp = new int[n + 1][capacidad + 1]; a++;
+        int[][] dp = new int[n + 1][capacidad + 1]; a++; memoriaUsada += 32;
 
         // Llenar la tabla dp usando el algoritmo de programación dinámica
         for (int i = 1; i <= n; i++) {
@@ -28,13 +28,13 @@ public class Dinamico {
                 c++;
                 if (items[i - 1].getPeso() <= w) {
                     // Decidir si incluir el ítem actual o no
-                    dp[i][w] = Math.max(dp[i - 1][w],
-                                        dp[i - 1][w - items[i - 1].getPeso()] + items[i - 1].getValor());
+                    dp[i][w] = Math.max(dp[i - 1][w], 
+                                        dp[i - 1][w - items[i - 1].getPeso()] + items[i - 1].getValor()); memoriaUsada += 32;
                     a++;
                 } else {
                     c++;
                     // No incluir el ítem actual
-                    dp[i][w] = dp[i - 1][w];
+                    dp[i][w] = dp[i - 1][w]; memoriaUsada += 32;
                     a++;
                 }
             }
@@ -46,20 +46,20 @@ public class Dinamico {
         }
 
         // Encontrar los ítems seleccionados
-        int w = capacidad; a++;
-        int valorTotal = dp[n][w]; a++;
-        int pesoTotal = 0; a++;
-        boolean[] seleccionados = new boolean[n]; a++;
+        int w = capacidad; a++; memoriaUsada += 32;
+        int valorTotal = dp[n][w]; a++; memoriaUsada += 32;
+        int pesoTotal = 0; a++; memoriaUsada += 32;
+        boolean[] seleccionados = new boolean[n]; a++; memoriaUsada += 2;
         
         for (int i = n; i > 0 && valorTotal > 0; i--) {
             c+= 2;
             // Si el valor total actual no es el mismo que el valor en la fila anterior, significa que se incluyó el ítem actual
             c++;
             if (valorTotal != dp[i - 1][w]) {
-                seleccionados[i - 1] = true; a++;
-                pesoTotal += items[i - 1].getPeso(); a++;
-                valorTotal -= items[i - 1].getValor(); a++;
-                w -= items[i - 1].getPeso(); a++;
+                seleccionados[i - 1] = true; a++; memoriaUsada += 2;
+                pesoTotal += items[i - 1].getPeso(); a++; memoriaUsada += 32;
+                valorTotal -= items[i - 1].getValor(); a++; memoriaUsada += 32;
+                w -= items[i - 1].getPeso(); a++; memoriaUsada += 32;
             }
         }
         c++;
@@ -68,23 +68,24 @@ public class Dinamico {
         Item[] itemsSeleccionados = java.util.stream.IntStream.range(0, n)
                                                              .filter(i -> seleccionados[i])
                                                              .mapToObj(i -> items[i])
-                                                             .toArray(Item[]::new);
+                                                             .toArray(Item[]::new); memoriaUsada += 32;
         a++;
 
         // Crear una nueva mochila con los ítems seleccionados
-        Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados); a++;
-        resultado.setPesoTotal(pesoTotal); a++;
-        resultado.setValorTotal(dp[n][capacidad]); a++;
+        Mochila resultado = new Mochila(mochila.getCapacidad(), itemsSeleccionados); a++; memoriaUsada += 32;
+        resultado.setPesoTotal(pesoTotal); a++; memoriaUsada += 32;
+        resultado.setValorTotal(dp[n][capacidad]); a++; memoriaUsada += 32;
         long endTime = System.nanoTime();
 
         long tiempoEjecucion = endTime - startTime;
-        long durationInMs = TimeUnit.NANOSECONDS.toMillis(tiempoEjecucion);
+        long durationInMs = TimeUnit.NANOSECONDS.toMillis(tiempoEjecucion); 
         // Resultados finales
         System.out.println("Asignaciones dinamicas: " + a);
         System.out.println("Comparaciones dinamicas: " + c);
         lineasEjecutadas = a + c;
         System.out.println("Lineas ejecutadas: " + lineasEjecutadas);  
         System.out.println("Tiempo de ejecucion: " + durationInMs + " ms");
+        System.out.println("Memoria usada: " + memoriaUsada + " bits");
 
         // Retornar la mochila con la solución óptima
         return resultado;
@@ -92,21 +93,21 @@ public class Dinamico {
 
     // Método para imprimir los resultados en una etapa específica
     private static void imprimirResultados(int[][] dp, int etapa, Item[] items, int capacidad) {
-        System.out.println("Resultados en la etapa " + etapa + ":");
-        int valorTotal = dp[etapa][capacidad]; a++;
-        int pesoTotal = 0; a++;
-        boolean[] seleccionados = new boolean[etapa]; a++;
+        System.out.println("Resultados en la etapa " + etapa + ":"); memoriaUsada += 32;
+        int valorTotal = dp[etapa][capacidad]; a++; memoriaUsada += 32;
+        int pesoTotal = 0; a++; memoriaUsada += 32;
+        boolean[] seleccionados = new boolean[etapa]; a++; memoriaUsada += 2;
         
-        int w = capacidad; a++;
+        int w = capacidad; a++; memoriaUsada += 32;
         for (int i = etapa; i > 0 && valorTotal > 0; i--) {
             c+= 2;
             // Si el valor total actual no es el mismo que el valor en la fila anterior, significa que se incluyó el ítem actual
             c++;
             if (valorTotal != dp[i - 1][w]) {
-                seleccionados[i - 1] = true; a++;
-                pesoTotal += items[i - 1].getPeso(); a++;
-                valorTotal -= items[i - 1].getValor(); a++;
-                w -= items[i - 1].getPeso(); a++;
+                seleccionados[i - 1] = true; a++; memoriaUsada += 2;
+                pesoTotal += items[i - 1].getPeso(); a++; memoriaUsada += 32;
+                valorTotal -= items[i - 1].getValor(); a++; memoriaUsada += 32; 
+                w -= items[i - 1].getPeso(); a++; memoriaUsada += 32;
             }
         }
 
