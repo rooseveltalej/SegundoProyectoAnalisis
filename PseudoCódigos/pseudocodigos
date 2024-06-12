@@ -1,0 +1,162 @@
+INICIAR VARIABLES
+    TAMANO_POBLACION = 20
+    TASA_MUTACION = 0.05
+    NUMERO_GENERACIONES = 20
+    PENALIDAD = 1000.0
+
+FUNCION resolverMochilaGA(mochila)
+    capacidad = obtenerCapacidad(mochila)
+    items = obtenerItems(mochila)
+    n = longitud(items)
+    
+    INICIALIZAR POBLACION
+    PARA i DESDE 0 HASTA TAMANO_POBLACION - 1 HACER
+        PARA j DESDE 0 HASTA n - 1 HACER
+            poblacion[i][j] = valor aleatorio (0 o 1)
+    
+    mejorIndividuo = NULL
+    mejorAptitud = -INFINITO
+
+    ALMACENAR MEJORES POBLACIONES
+    mejoresPoblaciones = array de tamaño TAMANO_POBLACION x (n + 1)
+
+    PARA generacion DESDE 0 HASTA NUMERO_GENERACIONES - 1 HACER
+        EVALUAR APTITUD
+        PARA i DESDE 0 HASTA TAMANO_POBLACION - 1 HACER
+            aptitud[i] = evaluarAptitud(poblacion[i], items, capacidad)
+            SI aptitud[i] > mejorAptitud ENTONCES
+                mejorAptitud = aptitud[i]
+                mejorIndividuo = copia(poblacion[i])
+
+        GUARDAR MEJORES POBLACIONES
+        PARA i DESDE 0 HASTA TAMANO_POBLACION - 1 HACER
+            mejoresPoblaciones[i] = poblacion[i] + [aptitud[i]]
+        
+        SELECCIÓN
+        nuevaPoblacion = array de tamaño TAMANO_POBLACION x n
+        PARA i DESDE 0 HASTA TAMANO_POBLACION - 1 HACER
+            padre1 = seleccionar(aptitud)
+            padre2 = seleccionar(aptitud)
+            descendiente = cruzar(poblacion[padre1], poblacion[padre2], items, capacidad)
+            nuevaPoblacion[i] = descendiente
+
+            IMPRIMIR "Padre 1, Padre 2, Descendiente" con sus puntuaciones
+
+        MUTACIÓN DIRIGIDA Y EVITAR DUPLICADOS
+        PARA i DESDE 0 HASTA TAMANO_POBLACION - 1 HACER
+            SI random < TASA_MUTACION ENTONCES
+                mutarDirigida(nuevaPoblacion[i], items, capacidad)
+            PARA j DESDE 0 HASTA i - 1 HACER
+                SI nuevaPoblacion[i] ES IGUAL A nuevaPoblacion[j] ENTONCES
+                    mutar(nuevaPoblacion[i])
+
+        ELITISMO
+        SI mejorIndividuo != NULL ENTONCES
+            nuevaPoblacion[0] = mejorIndividuo
+        
+        poblacion = nuevaPoblacion
+    
+    ORDENAR MEJORES POBLACIONES POR PUNTUACIÓN
+    ordenar(mejoresPoblaciones, por puntuación descendente)
+    
+    IMPRIMIR LAS 5 MEJORES POBLACIONES Y SUS PUNTUACIONES
+    SI TAMANO_POBLACION == 3 ENTONCES
+        IMPRIMIR "Las 3 mejores poblaciones"
+    SINO
+        IMPRIMIR "Las 5 mejores poblaciones"
+
+    CONSTRUIR LISTA DE ITEMS SELECCIONADOS
+    pesoTotalFinal = 0
+    valorTotalFinal = 0
+    count = contar elementos en mejorIndividuo == 1
+
+    itemsSeleccionados = array de tamaño count
+    index = 0
+    PARA i DESDE 0 HASTA longitud(mejorIndividuo) - 1 HACER
+        SI mejorIndividuo[i] == 1 ENTONCES
+            itemsSeleccionados[index++] = items[i]
+            pesoTotalFinal += items[i].peso
+            valorTotalFinal += items[i].valor
+
+    resultado = nueva Mochila(capacidad, itemsSeleccionados)
+    resultado.setPesoTotal(pesoTotalFinal)
+    resultado.setValorTotal(valorTotalFinal)
+
+    RETORNAR resultado
+
+FUNCION evaluarAptitud(individuo, items, capacidad)
+    pesoTotal = 0
+    valorTotal = 0
+    PARA i DESDE 0 HASTA longitud(individuo) - 1 HACER
+        SI individuo[i] == 1 ENTONCES
+            pesoTotal += items[i].peso
+            valorTotal += items[i].valor
+    SI pesoTotal <= capacidad ENTONCES
+        RETORNAR valorTotal
+    SINO
+        RETORNAR valorTotal - PENALIDAD * (pesoTotal - capacidad)
+
+FUNCION seleccionar(aptitud)
+    totalAptitud = suma(aptitud)
+    SI totalAptitud <= 0 ENTONCES
+        RETORNAR índice aleatorio en aptitud
+
+    punto = random * totalAptitud
+    suma = 0
+    PARA i DESDE 0 HASTA longitud(aptitud) - 1 HACER
+        suma += aptitud[i]
+        SI suma > punto ENTONCES
+            RETORNAR i
+    RETORNAR longitud(aptitud) - 1
+
+FUNCION cruzar(padre1, padre2, items, capacidad)
+    puntoCruce1 = random en rango(padre1.length)
+    puntoCruce2 = random en rango(padre1.length - puntoCruce1) + puntoCruce1
+    descendiente = array de tamaño padre1.length
+    descendienteOrigen = ""
+
+    PARA i DESDE 0 HASTA puntoCruce1 - 1 HACER
+        descendiente[i] = padre1[i]
+        descendienteOrigen += "P1 "
+    PARA i DESDE puntoCruce1 HASTA puntoCruce2 - 1 HACER
+        descendiente[i] = padre2[i]
+        descendienteOrigen += "P2 "
+    PARA i DESDE puntoCruce2 HASTA longitud(padre2) - 1 HACER
+        descendiente[i] = padre1[i]
+        descendienteOrigen += "P1 "
+    
+    corregir(descendiente, items, capacidad)
+    IMPRIMIR "Origen descendiente: " + descendienteOrigen
+
+    RETORNAR descendiente
+
+FUNCION mutar(individuo)
+    PARA i DESDE 0 HASTA longitud(individuo) - 1 HACER
+        SI random < TASA_MUTACION ENTONCES
+            individuo[i] = 1 - individuo[i]
+
+FUNCION mutarDirigida(individuo, items, capacidad)
+    intento = 0
+    MIENTRAS intento < 10 HACER
+        index = random en rango(individuo.length)
+        individuo[index] = 1 - individuo[index]
+        pesoTotal = 0
+        PARA i DESDE 0 HASTA longitud(individuo) - 1 HACER
+            SI individuo[i] == 1 ENTONCES
+                pesoTotal += items[i].peso
+        SI pesoTotal <= capacidad ENTONCES
+            RETORNAR
+        SINO
+            individuo[index] = 1 - individuo[index]
+        intento += 1
+
+FUNCION corregir(individuo, items, capacidad)
+    pesoTotal = 0
+    PARA i DESDE 0 HASTA longitud(individuo) - 1 HACER
+        SI individuo[i] == 1 ENTONCES
+            pesoTotal += items[i].peso
+    MIENTRAS pesoTotal > capacidad HACER
+        index = random en rango(individuo.length)
+        SI individuo[index] == 1 ENTONCES
+            individuo[index] = 0
+            pesoTotal -= items[index].peso
